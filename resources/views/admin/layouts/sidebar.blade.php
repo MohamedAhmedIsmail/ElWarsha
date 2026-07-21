@@ -1,11 +1,11 @@
 @php
     $menu = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard'],
-        ['label' => 'Users', 'route' => null],
-        ['label' => 'Car Brands', 'route' => null],
-        ['label' => 'Car Models', 'route' => null],
-        ['label' => 'Service Categories', 'route' => null],
-        ['label' => 'Services', 'route' => null],
+        ['label' => 'Users', 'route' => 'admin.users.index'],
+        ['label' => 'Car Brands', 'route' => 'admin.car-brands.index'],
+        ['label' => 'Car Models', 'route' => 'admin.car-models.index'],
+        ['label' => 'Service Categories', 'route' => 'admin.service-categories.index'],
+        ['label' => 'Services', 'route' => 'admin.services.index'],
         ['label' => 'Workshops', 'route' => null],
         ['label' => 'Workshop Verifications', 'route' => null],
         ['label' => 'Diagnoses', 'route' => null],
@@ -35,7 +35,7 @@
     <nav class="nav flex-column gap-1">
         @foreach ($menu as $item)
             @php
-                $isActive = $item['route'] && request()->routeIs($item['route']);
+                $isActive = $item['route'] && request()->routeIs(str_replace('.index', '.*', $item['route']));
             @endphp
             <a class="nav-link {{ $isActive ? 'active' : '' }}" href="{{ $item['route'] ? route($item['route']) : '#' }}">
                 {{ $item['label'] }}

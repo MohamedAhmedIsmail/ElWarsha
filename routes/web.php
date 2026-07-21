@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CarBrandController;
+use App\Http\Controllers\Admin\CarModelController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ServiceCategoryController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +32,10 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
 
     Route::middleware('admin')->group(function (): void {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('users', UserController::class);
+        Route::resource('car-brands', CarBrandController::class)->except(['show'])->parameters(['car-brands' => 'brand']);
+        Route::resource('car-models', CarModelController::class)->except(['show'])->parameters(['car-models' => 'model']);
+        Route::resource('service-categories', ServiceCategoryController::class)->except(['show'])->parameters(['service-categories' => 'category']);
+        Route::resource('services', ServiceController::class)->except(['show']);
     });
 });
