@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -34,6 +35,14 @@ class Handler extends ExceptionHandler
             }
 
             return ApiResponse::error('Forbidden.', null, 403);
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, $request): ?JsonResponse {
+            if (! $request->expectsJson() && ! $request->is('api/*')) {
+                return null;
+            }
+
+            return ApiResponse::error($e->getMessage() ?: 'Not found.', null, 404);
         });
 
         $this->reportable(function (Throwable $e) {

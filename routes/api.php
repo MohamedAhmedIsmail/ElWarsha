@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\LookupController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +28,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('me', [AuthController::class, 'me']);
     Route::put('me', [AuthController::class, 'updateMe']);
 });
+
+Route::get('car-brands', [LookupController::class, 'carBrands']);
+Route::get('car-brands/{brand}/models', [LookupController::class, 'carBrandModels'])->whereNumber('brand');
+Route::get('car-models', [LookupController::class, 'carModels']);
+
+Route::get('service-categories', [LookupController::class, 'serviceCategories']);
+Route::get('service-categories/{category}/services', [LookupController::class, 'serviceCategoryServices'])->whereNumber('category');
+Route::get('services', [LookupController::class, 'services']);
