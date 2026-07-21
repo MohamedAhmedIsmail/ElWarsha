@@ -8,6 +8,7 @@ use App\Http\Controllers\LookupController;
 use App\Http\Controllers\MaintenanceItemController;
 use App\Http\Controllers\ProviderSosRequestController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ServiceLedgerController;
 use App\Http\Controllers\SosRequestController;
 use App\Http\Controllers\SosServiceTypeController;
 use App\Http\Controllers\VehicleController;
@@ -57,9 +58,15 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->whereNumber('review');
     Route::get('vehicles/{vehicle}/maintenance-reminders', [VehicleMaintenanceReminderController::class, 'index'])->whereNumber('vehicle');
     Route::post('vehicles/{vehicle}/maintenance-reminders', [VehicleMaintenanceReminderController::class, 'store'])->whereNumber('vehicle');
+    Route::get('vehicles/{vehicle}/service-ledger', [ServiceLedgerController::class, 'index'])->whereNumber('vehicle');
+    Route::post('vehicles/{vehicle}/service-ledger', [ServiceLedgerController::class, 'store'])->whereNumber('vehicle');
     Route::get('maintenance-reminders/upcoming', [VehicleMaintenanceReminderController::class, 'upcoming']);
     Route::put('maintenance-reminders/{reminder}', [VehicleMaintenanceReminderController::class, 'update'])->whereNumber('reminder');
     Route::delete('maintenance-reminders/{reminder}', [VehicleMaintenanceReminderController::class, 'destroy'])->whereNumber('reminder');
+    Route::get('service-ledger/{ledger}', [ServiceLedgerController::class, 'show'])->whereNumber('ledger');
+    Route::put('service-ledger/{ledger}', [ServiceLedgerController::class, 'update'])->whereNumber('ledger');
+    Route::delete('service-ledger/{ledger}', [ServiceLedgerController::class, 'destroy'])->whereNumber('ledger');
+    Route::post('service-ledger/{ledger}/media', [ServiceLedgerController::class, 'uploadMedia'])->whereNumber('ledger');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);

@@ -104,4 +104,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(VehicleMaintenanceReminder::class);
     }
+
+    public function serviceLedgers(): HasMany
+    {
+        return $this->hasMany(ServiceLedger::class);
+    }
 }

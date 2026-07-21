@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ServiceLedger extends Model
 {
+    use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
@@ -40,8 +43,38 @@ class ServiceLedger extends Model
         return $this->belongsTo(Booking::class);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function vehicle(): BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function workshop(): BelongsTo
+    {
+        return $this->belongsTo(Workshop::class);
+    }
+
+    public function diagnosis(): BelongsTo
+    {
+        return $this->belongsTo(Diagnosis::class);
+    }
+
     public function sosRequest(): BelongsTo
     {
         return $this->belongsTo(SosRequest::class);
+    }
+
+    public function maintenanceItem(): BelongsTo
+    {
+        return $this->belongsTo(MaintenanceItem::class);
+    }
+
+    public function media(): HasMany
+    {
+        return $this->hasMany(ServiceLedgerMedia::class);
     }
 }

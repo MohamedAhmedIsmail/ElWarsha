@@ -82,4 +82,9 @@ class Vehicle extends Model
     {
         return $this->hasMany(VehicleMaintenanceReminder::class);
     }
+
+    public function serviceLedgers(): HasMany
+    {
+        return $this->hasMany(ServiceLedger::class);
+    }
 }
