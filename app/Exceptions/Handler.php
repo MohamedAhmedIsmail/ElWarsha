@@ -2,6 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Support\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -23,8 +28,34 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
+        $this->renderable(function (AuthorizationException $e, $request): ?JsonResponse {
+            if (! $request->expectsJson() && ! $request->is('api/*')) {
+                return null;
+            }
+
+            return ApiResponse::error('Forbidden.', null, 403);
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    protected function invalidJson($request, ValidationException $exception): JsonResponse
+    {
+        return ApiResponse::error(
+            $exception->getMessage(),
+            $exception->errors(),
+            $exception->status
+        );
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if (! $request->expectsJson() && ! $request->is('api/*')) {
+            return parent::unauthenticated($request, $exception);
+        }
+
+        return ApiResponse::error('Unauthenticated.', null, 401);
     }
 }
