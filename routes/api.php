@@ -6,6 +6,7 @@ use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\EmergencyGuidanceController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\MaintenanceItemController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProviderSosRequestController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceLedgerController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\WorkshopDirectoryController;
 use App\Http\Controllers\WorkshopTrackingController;
 use App\Http\Controllers\WorkshopBookingController;
 use App\Http\Controllers\WorkshopOwnerController;
+use App\Http\Controllers\WorkshopSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -92,6 +94,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::put('leads/{lead}/status', [WorkshopCrmController::class, 'updateStatus'])->whereNumber('lead');
         Route::post('leads/{lead}/notes', [WorkshopCrmController::class, 'addNote'])->whereNumber('lead');
         Route::get('crm/analytics', [WorkshopCrmController::class, 'analytics']);
+        Route::get('subscription', [WorkshopSubscriptionController::class, 'show']);
+        Route::post('subscription/request', [WorkshopSubscriptionController::class, 'request']);
     });
 
     Route::prefix('provider')->group(function (): void {
@@ -112,6 +116,7 @@ Route::get('car-models', [LookupController::class, 'carModels']);
 Route::get('service-categories', [LookupController::class, 'serviceCategories']);
 Route::get('service-categories/{category}/services', [LookupController::class, 'serviceCategoryServices'])->whereNumber('category');
 Route::get('services', [LookupController::class, 'services']);
+Route::get('plans', [PlanController::class, 'index']);
 Route::get('sos-service-types', [SosServiceTypeController::class, 'index']);
 Route::get('maintenance-items', [MaintenanceItemController::class, 'index']);
 

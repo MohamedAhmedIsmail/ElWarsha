@@ -97,6 +97,16 @@ class Workshop extends Model
         return $this->hasMany(WorkshopAnalyticsEvent::class);
     }
 
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function sosProviders(): HasMany
     {
         return $this->hasMany(SosProvider::class);

@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(SosServiceTypeSeeder::class);
         $this->call(MaintenanceItemSeeder::class);
+        $this->call(PlanSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

@@ -24,6 +24,8 @@ use App\Repositories\Contracts\DiagnosisWorkshopSuggestionRepositoryInterface;
 use App\Repositories\Contracts\LeadRepositoryInterface;
 use App\Repositories\Contracts\MaintenanceItemRepositoryInterface;
 use App\Repositories\Contracts\NotificationRepositoryInterface;
+use App\Repositories\Contracts\PaymentRepositoryInterface;
+use App\Repositories\Contracts\PlanRepositoryInterface;
 use App\Repositories\Contracts\WorkshopAnalyticsRepositoryInterface;
 use App\Repositories\Contracts\WorkshopImageRepositoryInterface;
 use App\Repositories\Contracts\WorkshopRepositoryInterface;
@@ -31,6 +33,7 @@ use App\Repositories\Contracts\WorkshopWorkingHourRepositoryInterface;
 use App\Repositories\Contracts\ServiceLedgerRepositoryInterface;
 use App\Repositories\Contracts\WhatsappMessageRepositoryInterface;
 use App\Repositories\Contracts\VehicleMaintenanceReminderRepositoryInterface;
+use App\Repositories\Contracts\SubscriptionRepositoryInterface;
 use App\Repositories\Eloquent\OtpCodeRepository;
 use App\Repositories\Eloquent\BookingRepository;
 use App\Repositories\Eloquent\BookingStatusLogRepository;
@@ -44,6 +47,8 @@ use App\Repositories\Eloquent\EmergencyGuidanceRepository;
 use App\Repositories\Eloquent\LeadRepository;
 use App\Repositories\Eloquent\MaintenanceItemRepository;
 use App\Repositories\Eloquent\NotificationRepository;
+use App\Repositories\Eloquent\PaymentRepository;
+use App\Repositories\Eloquent\PlanRepository;
 use App\Repositories\Eloquent\ReviewRepository;
 use App\Repositories\Eloquent\ServiceCategoryRepository;
 use App\Repositories\Eloquent\ServiceLedgerRepository;
@@ -52,6 +57,7 @@ use App\Repositories\Eloquent\SosProviderRepository;
 use App\Repositories\Eloquent\SosRequestLogRepository;
 use App\Repositories\Eloquent\SosRequestRepository;
 use App\Repositories\Eloquent\SosServiceTypeRepository;
+use App\Repositories\Eloquent\SubscriptionRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VehicleRepository;
 use App\Repositories\Eloquent\VehicleMaintenanceReminderRepository;
@@ -98,6 +104,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EmergencyGuidanceRepositoryInterface::class, EmergencyGuidanceRepository::class);
         $this->app->bind(MaintenanceItemRepositoryInterface::class, MaintenanceItemRepository::class);
         $this->app->bind(VehicleMaintenanceReminderRepositoryInterface::class, VehicleMaintenanceReminderRepository::class);
+        $this->app->bind(PlanRepositoryInterface::class, PlanRepository::class);
+        $this->app->bind(SubscriptionRepositoryInterface::class, SubscriptionRepository::class);
+        $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
     }
 
     /**
