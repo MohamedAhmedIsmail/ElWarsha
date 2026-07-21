@@ -5,11 +5,13 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\EmergencyGuidanceController;
 use App\Http\Controllers\LookupController;
+use App\Http\Controllers\MaintenanceItemController;
 use App\Http\Controllers\ProviderSosRequestController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SosRequestController;
 use App\Http\Controllers\SosServiceTypeController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\VehicleMaintenanceReminderController;
 use App\Http\Controllers\WorkshopDirectoryController;
 use App\Http\Controllers\WorkshopBookingController;
 use App\Http\Controllers\WorkshopOwnerController;
@@ -53,6 +55,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('my-reviews', [ReviewController::class, 'mine']);
     Route::put('reviews/{review}', [ReviewController::class, 'update'])->whereNumber('review');
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->whereNumber('review');
+    Route::get('vehicles/{vehicle}/maintenance-reminders', [VehicleMaintenanceReminderController::class, 'index'])->whereNumber('vehicle');
+    Route::post('vehicles/{vehicle}/maintenance-reminders', [VehicleMaintenanceReminderController::class, 'store'])->whereNumber('vehicle');
+    Route::get('maintenance-reminders/upcoming', [VehicleMaintenanceReminderController::class, 'upcoming']);
+    Route::put('maintenance-reminders/{reminder}', [VehicleMaintenanceReminderController::class, 'update'])->whereNumber('reminder');
+    Route::delete('maintenance-reminders/{reminder}', [VehicleMaintenanceReminderController::class, 'destroy'])->whereNumber('reminder');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);
@@ -91,6 +98,7 @@ Route::get('service-categories', [LookupController::class, 'serviceCategories'])
 Route::get('service-categories/{category}/services', [LookupController::class, 'serviceCategoryServices'])->whereNumber('category');
 Route::get('services', [LookupController::class, 'services']);
 Route::get('sos-service-types', [SosServiceTypeController::class, 'index']);
+Route::get('maintenance-items', [MaintenanceItemController::class, 'index']);
 
 Route::get('workshops', [WorkshopDirectoryController::class, 'index']);
 Route::get('workshops/nearby', [WorkshopDirectoryController::class, 'nearby']);

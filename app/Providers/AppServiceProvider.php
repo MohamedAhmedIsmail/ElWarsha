@@ -22,6 +22,7 @@ use App\Repositories\Contracts\DiagnosisMediaRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisWorkshopSuggestionRepositoryInterface;
 use App\Repositories\Contracts\LeadRepositoryInterface;
+use App\Repositories\Contracts\MaintenanceItemRepositoryInterface;
 use App\Repositories\Contracts\NotificationRepositoryInterface;
 use App\Repositories\Contracts\WorkshopAnalyticsRepositoryInterface;
 use App\Repositories\Contracts\WorkshopImageRepositoryInterface;
@@ -29,6 +30,7 @@ use App\Repositories\Contracts\WorkshopRepositoryInterface;
 use App\Repositories\Contracts\WorkshopWorkingHourRepositoryInterface;
 use App\Repositories\Contracts\ServiceLedgerRepositoryInterface;
 use App\Repositories\Contracts\WhatsappMessageRepositoryInterface;
+use App\Repositories\Contracts\VehicleMaintenanceReminderRepositoryInterface;
 use App\Repositories\Eloquent\OtpCodeRepository;
 use App\Repositories\Eloquent\BookingRepository;
 use App\Repositories\Eloquent\BookingStatusLogRepository;
@@ -40,6 +42,7 @@ use App\Repositories\Eloquent\DiagnosisRepository;
 use App\Repositories\Eloquent\DiagnosisWorkshopSuggestionRepository;
 use App\Repositories\Eloquent\EmergencyGuidanceRepository;
 use App\Repositories\Eloquent\LeadRepository;
+use App\Repositories\Eloquent\MaintenanceItemRepository;
 use App\Repositories\Eloquent\NotificationRepository;
 use App\Repositories\Eloquent\ReviewRepository;
 use App\Repositories\Eloquent\ServiceCategoryRepository;
@@ -51,6 +54,7 @@ use App\Repositories\Eloquent\SosRequestRepository;
 use App\Repositories\Eloquent\SosServiceTypeRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VehicleRepository;
+use App\Repositories\Eloquent\VehicleMaintenanceReminderRepository;
 use App\Repositories\Eloquent\WorkshopAnalyticsRepository;
 use App\Repositories\Eloquent\WorkshopImageRepository;
 use App\Repositories\Eloquent\WorkshopRepository;
@@ -92,6 +96,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SosRequestRepositoryInterface::class, SosRequestRepository::class);
         $this->app->bind(SosRequestLogRepositoryInterface::class, SosRequestLogRepository::class);
         $this->app->bind(EmergencyGuidanceRepositoryInterface::class, EmergencyGuidanceRepository::class);
+        $this->app->bind(MaintenanceItemRepositoryInterface::class, MaintenanceItemRepository::class);
+        $this->app->bind(VehicleMaintenanceReminderRepositoryInterface::class, VehicleMaintenanceReminderRepository::class);
     }
 
     /**

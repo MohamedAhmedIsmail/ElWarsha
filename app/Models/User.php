@@ -99,4 +99,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function maintenanceReminders(): HasMany
+    {
+        return $this->hasMany(VehicleMaintenanceReminder::class);
+    }
 }
