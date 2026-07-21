@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Workshop::class, 'owner_id');
     }
+
+    public function diagnoses(): HasMany
+    {
+        return $this->hasMany(Diagnosis::class);
+    }
 }

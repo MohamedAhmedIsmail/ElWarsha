@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WorkshopDirectoryController;
@@ -31,6 +32,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('me', [AuthController::class, 'me']);
     Route::put('me', [AuthController::class, 'updateMe']);
     Route::apiResource('vehicles', VehicleController::class)->whereNumber('vehicle');
+    Route::apiResource('diagnoses', DiagnosisController::class)->only(['index', 'store', 'show'])->whereNumber('diagnosis');
+    Route::post('diagnoses/{diagnosis}/media', [DiagnosisController::class, 'uploadMedia'])->whereNumber('diagnosis');
+    Route::get('diagnoses/{diagnosis}/recommended-workshops', [DiagnosisController::class, 'recommendedWorkshops'])->whereNumber('diagnosis');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);

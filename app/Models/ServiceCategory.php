@@ -33,6 +33,11 @@ class ServiceCategory extends Model
         return $this->hasMany(Service::class);
     }
 
+    public function diagnoses(): HasMany
+    {
+        return $this->hasMany(Diagnosis::class, 'affected_category_id');
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where($this->getTable() . '.status', RecordStatus::Active->value);

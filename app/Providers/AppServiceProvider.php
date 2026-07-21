@@ -10,6 +10,10 @@ use App\Repositories\Contracts\ServiceRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\VehicleRepositoryInterface;
 use App\Repositories\Contracts\ReviewRepositoryInterface;
+use App\Repositories\Contracts\DiagnosisCategoryRepositoryInterface;
+use App\Repositories\Contracts\DiagnosisMediaRepositoryInterface;
+use App\Repositories\Contracts\DiagnosisRepositoryInterface;
+use App\Repositories\Contracts\DiagnosisWorkshopSuggestionRepositoryInterface;
 use App\Repositories\Contracts\WorkshopAnalyticsRepositoryInterface;
 use App\Repositories\Contracts\WorkshopImageRepositoryInterface;
 use App\Repositories\Contracts\WorkshopRepositoryInterface;
@@ -17,6 +21,10 @@ use App\Repositories\Contracts\WorkshopWorkingHourRepositoryInterface;
 use App\Repositories\Eloquent\OtpCodeRepository;
 use App\Repositories\Eloquent\CarBrandRepository;
 use App\Repositories\Eloquent\CarModelRepository;
+use App\Repositories\Eloquent\DiagnosisCategoryRepository;
+use App\Repositories\Eloquent\DiagnosisMediaRepository;
+use App\Repositories\Eloquent\DiagnosisRepository;
+use App\Repositories\Eloquent\DiagnosisWorkshopSuggestionRepository;
 use App\Repositories\Eloquent\ReviewRepository;
 use App\Repositories\Eloquent\ServiceCategoryRepository;
 use App\Repositories\Eloquent\ServiceRepository;
@@ -47,6 +55,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(WorkshopWorkingHourRepositoryInterface::class, WorkshopWorkingHourRepository::class);
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
         $this->app->bind(WorkshopAnalyticsRepositoryInterface::class, WorkshopAnalyticsRepository::class);
+        $this->app->bind(DiagnosisRepositoryInterface::class, DiagnosisRepository::class);
+        $this->app->bind(DiagnosisMediaRepositoryInterface::class, DiagnosisMediaRepository::class);
+        $this->app->bind(DiagnosisWorkshopSuggestionRepositoryInterface::class, DiagnosisWorkshopSuggestionRepository::class);
+        $this->app->bind(DiagnosisCategoryRepositoryInterface::class, DiagnosisCategoryRepository::class);
     }
 
     /**
