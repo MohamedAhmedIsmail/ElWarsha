@@ -67,6 +67,11 @@ class Diagnosis extends Model
         return $this->hasMany(DiagnosisWorkshopSuggestion::class);
     }
 
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     public function scopeOwnedBy(Builder $query, int $userId): Builder
     {
         return $query->where('diagnoses.user_id', $userId);

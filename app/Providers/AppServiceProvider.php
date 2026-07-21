@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Repositories\Contracts\OtpCodeRepositoryInterface;
+use App\Repositories\Contracts\BookingRepositoryInterface;
+use App\Repositories\Contracts\BookingStatusLogRepositoryInterface;
 use App\Repositories\Contracts\CarBrandRepositoryInterface;
 use App\Repositories\Contracts\CarModelRepositoryInterface;
 use App\Repositories\Contracts\ServiceCategoryRepositoryInterface;
@@ -14,19 +16,28 @@ use App\Repositories\Contracts\DiagnosisCategoryRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisMediaRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisWorkshopSuggestionRepositoryInterface;
+use App\Repositories\Contracts\LeadRepositoryInterface;
+use App\Repositories\Contracts\NotificationRepositoryInterface;
 use App\Repositories\Contracts\WorkshopAnalyticsRepositoryInterface;
 use App\Repositories\Contracts\WorkshopImageRepositoryInterface;
 use App\Repositories\Contracts\WorkshopRepositoryInterface;
 use App\Repositories\Contracts\WorkshopWorkingHourRepositoryInterface;
+use App\Repositories\Contracts\ServiceLedgerRepositoryInterface;
+use App\Repositories\Contracts\WhatsappMessageRepositoryInterface;
 use App\Repositories\Eloquent\OtpCodeRepository;
+use App\Repositories\Eloquent\BookingRepository;
+use App\Repositories\Eloquent\BookingStatusLogRepository;
 use App\Repositories\Eloquent\CarBrandRepository;
 use App\Repositories\Eloquent\CarModelRepository;
 use App\Repositories\Eloquent\DiagnosisCategoryRepository;
 use App\Repositories\Eloquent\DiagnosisMediaRepository;
 use App\Repositories\Eloquent\DiagnosisRepository;
 use App\Repositories\Eloquent\DiagnosisWorkshopSuggestionRepository;
+use App\Repositories\Eloquent\LeadRepository;
+use App\Repositories\Eloquent\NotificationRepository;
 use App\Repositories\Eloquent\ReviewRepository;
 use App\Repositories\Eloquent\ServiceCategoryRepository;
+use App\Repositories\Eloquent\ServiceLedgerRepository;
 use App\Repositories\Eloquent\ServiceRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VehicleRepository;
@@ -34,6 +45,7 @@ use App\Repositories\Eloquent\WorkshopAnalyticsRepository;
 use App\Repositories\Eloquent\WorkshopImageRepository;
 use App\Repositories\Eloquent\WorkshopRepository;
 use App\Repositories\Eloquent\WorkshopWorkingHourRepository;
+use App\Repositories\Eloquent\WhatsappMessageRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -59,6 +71,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DiagnosisMediaRepositoryInterface::class, DiagnosisMediaRepository::class);
         $this->app->bind(DiagnosisWorkshopSuggestionRepositoryInterface::class, DiagnosisWorkshopSuggestionRepository::class);
         $this->app->bind(DiagnosisCategoryRepositoryInterface::class, DiagnosisCategoryRepository::class);
+        $this->app->bind(BookingRepositoryInterface::class, BookingRepository::class);
+        $this->app->bind(BookingStatusLogRepositoryInterface::class, BookingStatusLogRepository::class);
+        $this->app->bind(LeadRepositoryInterface::class, LeadRepository::class);
+        $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
+        $this->app->bind(WhatsappMessageRepositoryInterface::class, WhatsappMessageRepository::class);
+        $this->app->bind(ServiceLedgerRepositoryInterface::class, ServiceLedgerRepository::class);
     }
 
     /**

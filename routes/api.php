@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WorkshopDirectoryController;
+use App\Http\Controllers\WorkshopBookingController;
 use App\Http\Controllers\WorkshopOwnerController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('diagnoses', DiagnosisController::class)->only(['index', 'store', 'show'])->whereNumber('diagnosis');
     Route::post('diagnoses/{diagnosis}/media', [DiagnosisController::class, 'uploadMedia'])->whereNumber('diagnosis');
     Route::get('diagnoses/{diagnosis}/recommended-workshops', [DiagnosisController::class, 'recommendedWorkshops'])->whereNumber('diagnosis');
+    Route::apiResource('bookings', BookingController::class)->only(['index', 'store', 'show'])->whereNumber('booking');
+    Route::put('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->whereNumber('booking');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);
@@ -45,6 +49,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::put('services', [WorkshopOwnerController::class, 'syncServices']);
         Route::put('brands', [WorkshopOwnerController::class, 'syncBrands']);
         Route::put('working-hours', [WorkshopOwnerController::class, 'syncWorkingHours']);
+
+        Route::get('bookings', [WorkshopBookingController::class, 'index']);
+        Route::get('bookings/{booking}', [WorkshopBookingController::class, 'show'])->whereNumber('booking');
+        Route::put('bookings/{booking}/accept', [WorkshopBookingController::class, 'accept'])->whereNumber('booking');
+        Route::put('bookings/{booking}/decline', [WorkshopBookingController::class, 'decline'])->whereNumber('booking');
+        Route::put('bookings/{booking}/start', [WorkshopBookingController::class, 'start'])->whereNumber('booking');
+        Route::put('bookings/{booking}/complete', [WorkshopBookingController::class, 'complete'])->whereNumber('booking');
     });
 });
 
