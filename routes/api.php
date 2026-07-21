@@ -13,7 +13,9 @@ use App\Http\Controllers\SosRequestController;
 use App\Http\Controllers\SosServiceTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleMaintenanceReminderController;
+use App\Http\Controllers\WorkshopCrmController;
 use App\Http\Controllers\WorkshopDirectoryController;
+use App\Http\Controllers\WorkshopTrackingController;
 use App\Http\Controllers\WorkshopBookingController;
 use App\Http\Controllers\WorkshopOwnerController;
 use Illuminate\Support\Facades\Route;
@@ -84,6 +86,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::put('bookings/{booking}/decline', [WorkshopBookingController::class, 'decline'])->whereNumber('booking');
         Route::put('bookings/{booking}/start', [WorkshopBookingController::class, 'start'])->whereNumber('booking');
         Route::put('bookings/{booking}/complete', [WorkshopBookingController::class, 'complete'])->whereNumber('booking');
+
+        Route::get('leads', [WorkshopCrmController::class, 'index']);
+        Route::get('leads/{lead}', [WorkshopCrmController::class, 'show'])->whereNumber('lead');
+        Route::put('leads/{lead}/status', [WorkshopCrmController::class, 'updateStatus'])->whereNumber('lead');
+        Route::post('leads/{lead}/notes', [WorkshopCrmController::class, 'addNote'])->whereNumber('lead');
+        Route::get('crm/analytics', [WorkshopCrmController::class, 'analytics']);
     });
 
     Route::prefix('provider')->group(function (): void {
@@ -112,3 +120,7 @@ Route::get('workshops/nearby', [WorkshopDirectoryController::class, 'nearby']);
 Route::get('workshops/{workshop}', [WorkshopDirectoryController::class, 'show'])->whereNumber('workshop');
 Route::get('workshops/{workshop}/services', [WorkshopDirectoryController::class, 'services'])->whereNumber('workshop');
 Route::get('workshops/{workshop}/reviews', [WorkshopDirectoryController::class, 'reviews'])->whereNumber('workshop');
+Route::post('workshops/{workshop}/track-view', [WorkshopTrackingController::class, 'view'])->whereNumber('workshop');
+Route::post('workshops/{workshop}/track-call', [WorkshopTrackingController::class, 'call'])->whereNumber('workshop');
+Route::post('workshops/{workshop}/track-whatsapp', [WorkshopTrackingController::class, 'whatsapp'])->whereNumber('workshop');
+Route::post('workshops/{workshop}/track-directions', [WorkshopTrackingController::class, 'directions'])->whereNumber('workshop');

@@ -87,6 +87,16 @@ class Workshop extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function leads(): HasMany
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function analyticsEvents(): HasMany
+    {
+        return $this->hasMany(WorkshopAnalyticsEvent::class);
+    }
+
     public function sosProviders(): HasMany
     {
         return $this->hasMany(SosProvider::class);

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Enums\WorkshopAnalyticsEventType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class WorkshopAnalyticsEvent extends Model
 {
+    use HasFactory;
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
