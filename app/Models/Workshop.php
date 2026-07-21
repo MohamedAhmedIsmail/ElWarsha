@@ -87,6 +87,11 @@ class Workshop extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function sosProviders(): HasMany
+    {
+        return $this->hasMany(SosProvider::class);
+    }
+
     public function scopeApproved(Builder $query): Builder
     {
         return $query->where('workshops.status', WorkshopStatus::Approved->value);

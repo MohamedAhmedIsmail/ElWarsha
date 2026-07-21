@@ -79,4 +79,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function sosRequests(): HasMany
+    {
+        return $this->hasMany(SosRequest::class);
+    }
+
+    public function sosProviders(): HasMany
+    {
+        return $this->hasMany(SosProvider::class);
+    }
 }

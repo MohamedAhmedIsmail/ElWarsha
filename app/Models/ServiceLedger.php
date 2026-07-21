@@ -39,4 +39,9 @@ class ServiceLedger extends Model
     {
         return $this->belongsTo(Booking::class);
     }
+
+    public function sosRequest(): BelongsTo
+    {
+        return $this->belongsTo(SosRequest::class);
+    }
 }

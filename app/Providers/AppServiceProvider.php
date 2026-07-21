@@ -9,6 +9,10 @@ use App\Repositories\Contracts\CarBrandRepositoryInterface;
 use App\Repositories\Contracts\CarModelRepositoryInterface;
 use App\Repositories\Contracts\ServiceCategoryRepositoryInterface;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Repositories\Contracts\SosProviderRepositoryInterface;
+use App\Repositories\Contracts\SosRequestLogRepositoryInterface;
+use App\Repositories\Contracts\SosRequestRepositoryInterface;
+use App\Repositories\Contracts\SosServiceTypeRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Contracts\VehicleRepositoryInterface;
 use App\Repositories\Contracts\ReviewRepositoryInterface;
@@ -39,6 +43,10 @@ use App\Repositories\Eloquent\ReviewRepository;
 use App\Repositories\Eloquent\ServiceCategoryRepository;
 use App\Repositories\Eloquent\ServiceLedgerRepository;
 use App\Repositories\Eloquent\ServiceRepository;
+use App\Repositories\Eloquent\SosProviderRepository;
+use App\Repositories\Eloquent\SosRequestLogRepository;
+use App\Repositories\Eloquent\SosRequestRepository;
+use App\Repositories\Eloquent\SosServiceTypeRepository;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Eloquent\VehicleRepository;
 use App\Repositories\Eloquent\WorkshopAnalyticsRepository;
@@ -77,6 +85,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
         $this->app->bind(WhatsappMessageRepositoryInterface::class, WhatsappMessageRepository::class);
         $this->app->bind(ServiceLedgerRepositoryInterface::class, ServiceLedgerRepository::class);
+        $this->app->bind(SosServiceTypeRepositoryInterface::class, SosServiceTypeRepository::class);
+        $this->app->bind(SosProviderRepositoryInterface::class, SosProviderRepository::class);
+        $this->app->bind(SosRequestRepositoryInterface::class, SosRequestRepository::class);
+        $this->app->bind(SosRequestLogRepositoryInterface::class, SosRequestLogRepository::class);
     }
 
     /**

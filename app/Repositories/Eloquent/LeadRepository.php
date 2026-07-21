@@ -6,6 +6,7 @@ use App\Enums\LeadSource;
 use App\Enums\LeadStatus;
 use App\Models\Booking;
 use App\Models\Lead;
+use App\Models\SosRequest;
 use App\Repositories\Contracts\LeadRepositoryInterface;
 
 class LeadRepository implements LeadRepositoryInterface
@@ -19,6 +20,18 @@ class LeadRepository implements LeadRepositoryInterface
             'booking_id' => $booking->id,
             'diagnosis_id' => $booking->diagnosis_id,
             'source' => LeadSource::Booking,
+            'status' => LeadStatus::New,
+        ]);
+    }
+
+    public function createFromSosRequest(SosRequest $sosRequest): Lead
+    {
+        return Lead::query()->create([
+            'workshop_id' => $sosRequest->assignedProvider->workshop_id,
+            'user_id' => $sosRequest->user_id,
+            'vehicle_id' => $sosRequest->vehicle_id,
+            'sos_request_id' => $sosRequest->id,
+            'source' => LeadSource::Sos,
             'status' => LeadStatus::New,
         ]);
     }

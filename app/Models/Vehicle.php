@@ -67,4 +67,9 @@ class Vehicle extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function sosRequests(): HasMany
+    {
+        return $this->hasMany(SosRequest::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Booking;
 use App\Models\ServiceLedger;
+use App\Models\SosRequest;
 use App\Repositories\Contracts\ServiceLedgerRepositoryInterface;
 
 class ServiceLedgerRepository implements ServiceLedgerRepositoryInterface
@@ -20,6 +21,20 @@ class ServiceLedgerRepository implements ServiceLedgerRepositoryInterface
             'description' => $booking->description,
             'service_date' => now()->toDateString(),
             'mileage_km' => $booking->vehicle?->mileage_km,
+        ]);
+    }
+
+    public function createFromCompletedSosRequest(SosRequest $sosRequest): ServiceLedger
+    {
+        return ServiceLedger::query()->create([
+            'user_id' => $sosRequest->user_id,
+            'vehicle_id' => $sosRequest->vehicle_id,
+            'workshop_id' => $sosRequest->assignedProvider?->workshop_id,
+            'sos_request_id' => $sosRequest->id,
+            'title' => $sosRequest->serviceType->name,
+            'description' => $sosRequest->description,
+            'service_date' => now()->toDateString(),
+            'mileage_km' => $sosRequest->vehicle?->mileage_km,
         ]);
     }
 }

@@ -4,6 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\LookupController;
+use App\Http\Controllers\ProviderSosRequestController;
+use App\Http\Controllers\SosRequestController;
+use App\Http\Controllers\SosServiceTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WorkshopDirectoryController;
 use App\Http\Controllers\WorkshopBookingController;
@@ -39,6 +42,10 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('diagnoses/{diagnosis}/recommended-workshops', [DiagnosisController::class, 'recommendedWorkshops'])->whereNumber('diagnosis');
     Route::apiResource('bookings', BookingController::class)->only(['index', 'store', 'show'])->whereNumber('booking');
     Route::put('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->whereNumber('booking');
+    Route::get('sos-requests', [SosRequestController::class, 'index']);
+    Route::post('sos-requests', [SosRequestController::class, 'store']);
+    Route::get('sos-requests/{sosRequest}', [SosRequestController::class, 'show'])->whereNumber('sosRequest');
+    Route::put('sos-requests/{sosRequest}/cancel', [SosRequestController::class, 'cancel'])->whereNumber('sosRequest');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);
@@ -57,6 +64,16 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::put('bookings/{booking}/start', [WorkshopBookingController::class, 'start'])->whereNumber('booking');
         Route::put('bookings/{booking}/complete', [WorkshopBookingController::class, 'complete'])->whereNumber('booking');
     });
+
+    Route::prefix('provider')->group(function (): void {
+        Route::get('sos-requests', [ProviderSosRequestController::class, 'index']);
+        Route::get('sos-requests/{sosRequest}', [ProviderSosRequestController::class, 'show'])->whereNumber('sosRequest');
+        Route::put('sos-requests/{sosRequest}/accept', [ProviderSosRequestController::class, 'accept'])->whereNumber('sosRequest');
+        Route::put('sos-requests/{sosRequest}/decline', [ProviderSosRequestController::class, 'decline'])->whereNumber('sosRequest');
+        Route::put('sos-requests/{sosRequest}/on-the-way', [ProviderSosRequestController::class, 'onTheWay'])->whereNumber('sosRequest');
+        Route::put('sos-requests/{sosRequest}/arrived', [ProviderSosRequestController::class, 'arrived'])->whereNumber('sosRequest');
+        Route::put('sos-requests/{sosRequest}/complete', [ProviderSosRequestController::class, 'complete'])->whereNumber('sosRequest');
+    });
 });
 
 Route::get('car-brands', [LookupController::class, 'carBrands']);
@@ -66,6 +83,7 @@ Route::get('car-models', [LookupController::class, 'carModels']);
 Route::get('service-categories', [LookupController::class, 'serviceCategories']);
 Route::get('service-categories/{category}/services', [LookupController::class, 'serviceCategoryServices'])->whereNumber('category');
 Route::get('services', [LookupController::class, 'services']);
+Route::get('sos-service-types', [SosServiceTypeController::class, 'index']);
 
 Route::get('workshops', [WorkshopDirectoryController::class, 'index']);
 Route::get('workshops/nearby', [WorkshopDirectoryController::class, 'nearby']);
