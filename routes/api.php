@@ -6,6 +6,7 @@ use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\EmergencyGuidanceController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\MaintenanceItemController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProviderSosRequestController;
 use App\Http\Controllers\ReviewController;
@@ -71,6 +72,10 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::put('service-ledger/{ledger}', [ServiceLedgerController::class, 'update'])->whereNumber('ledger');
     Route::delete('service-ledger/{ledger}', [ServiceLedgerController::class, 'destroy'])->whereNumber('ledger');
     Route::post('service-ledger/{ledger}/media', [ServiceLedgerController::class, 'uploadMedia'])->whereNumber('ledger');
+    Route::post('device-tokens', [NotificationController::class, 'storeDeviceToken']);
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::put('notifications/read-all', [NotificationController::class, 'markAllRead']);
+    Route::put('notifications/{notification}/read', [NotificationController::class, 'markRead'])->whereNumber('notification');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);

@@ -109,4 +109,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ServiceLedger::class);
     }
+
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class);
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

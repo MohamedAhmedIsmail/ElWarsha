@@ -2,29 +2,26 @@
 
 namespace App\Models;
 
+use App\Enums\DevicePlatform;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Notification extends Model
+class DeviceToken extends Model
 {
     use HasFactory;
 
-    public const UPDATED_AT = null;
-
     protected $fillable = [
         'user_id',
-        'title',
-        'body',
-        'type',
-        'data',
-        'read_at',
+        'token',
+        'platform',
+        'device_name',
     ];
 
     protected $casts = [
-        'data' => 'array',
-        'read_at' => 'datetime',
+        'platform' => DevicePlatform::class,
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function user(): BelongsTo

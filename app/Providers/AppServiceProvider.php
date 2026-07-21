@@ -21,6 +21,7 @@ use App\Repositories\Contracts\DiagnosisCategoryRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisMediaRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisRepositoryInterface;
 use App\Repositories\Contracts\DiagnosisWorkshopSuggestionRepositoryInterface;
+use App\Repositories\Contracts\DeviceTokenRepositoryInterface;
 use App\Repositories\Contracts\LeadRepositoryInterface;
 use App\Repositories\Contracts\MaintenanceItemRepositoryInterface;
 use App\Repositories\Contracts\NotificationRepositoryInterface;
@@ -43,6 +44,7 @@ use App\Repositories\Eloquent\DiagnosisCategoryRepository;
 use App\Repositories\Eloquent\DiagnosisMediaRepository;
 use App\Repositories\Eloquent\DiagnosisRepository;
 use App\Repositories\Eloquent\DiagnosisWorkshopSuggestionRepository;
+use App\Repositories\Eloquent\DeviceTokenRepository;
 use App\Repositories\Eloquent\EmergencyGuidanceRepository;
 use App\Repositories\Eloquent\LeadRepository;
 use App\Repositories\Eloquent\MaintenanceItemRepository;
@@ -107,6 +109,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PlanRepositoryInterface::class, PlanRepository::class);
         $this->app->bind(SubscriptionRepositoryInterface::class, SubscriptionRepository::class);
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
+        $this->app->bind(DeviceTokenRepositoryInterface::class, DeviceTokenRepository::class);
     }
 
     /**
