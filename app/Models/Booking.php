@@ -67,6 +67,11 @@ class Booking extends Model
         return $this->hasMany(BookingStatusLog::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function scopeOwnedBy(Builder $query, int $userId): Builder
     {
         return $query->where('bookings.user_id', $userId);

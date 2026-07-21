@@ -50,6 +50,16 @@ class Review extends Model
         return $this->belongsTo(Workshop::class);
     }
 
+    public function booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class);
+    }
+
+    public function sosRequest(): BelongsTo
+    {
+        return $this->belongsTo(SosRequest::class);
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('reviews.status', ReviewStatus::Published->value);

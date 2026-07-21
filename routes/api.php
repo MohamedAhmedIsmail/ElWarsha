@@ -6,6 +6,7 @@ use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\EmergencyGuidanceController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\ProviderSosRequestController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SosRequestController;
 use App\Http\Controllers\SosServiceTypeController;
 use App\Http\Controllers\VehicleController;
@@ -48,6 +49,10 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('sos-requests/{sosRequest}', [SosRequestController::class, 'show'])->whereNumber('sosRequest');
     Route::put('sos-requests/{sosRequest}/cancel', [SosRequestController::class, 'cancel'])->whereNumber('sosRequest');
     Route::post('emergency-guidance', [EmergencyGuidanceController::class, 'store']);
+    Route::post('reviews', [ReviewController::class, 'store']);
+    Route::get('my-reviews', [ReviewController::class, 'mine']);
+    Route::put('reviews/{review}', [ReviewController::class, 'update'])->whereNumber('review');
+    Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->whereNumber('review');
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);

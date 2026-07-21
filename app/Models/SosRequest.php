@@ -58,6 +58,11 @@ class SosRequest extends Model
         return $this->hasMany(SosRequestLog::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function scopeOwnedBy(Builder $query, int $userId): Builder
     {
         return $query->where('sos_requests.user_id', $userId);

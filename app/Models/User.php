@@ -94,4 +94,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(EmergencyGuidanceRequest::class);
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 }
