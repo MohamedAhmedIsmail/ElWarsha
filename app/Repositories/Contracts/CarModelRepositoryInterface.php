@@ -13,4 +13,6 @@ interface CarModelRepositoryInterface
      * @return Collection<int, CarModel>|LengthAwarePaginator
      */
     public function listActive(LookupQueryData $queryData, ?int $brandId = null): Collection|LengthAwarePaginator;
+
+    public function existsForBrand(int $modelId, int $brandId): bool;
 }

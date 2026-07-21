@@ -8,12 +8,14 @@ use App\Repositories\Contracts\CarModelRepositoryInterface;
 use App\Repositories\Contracts\ServiceCategoryRepositoryInterface;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\VehicleRepositoryInterface;
 use App\Repositories\Eloquent\OtpCodeRepository;
 use App\Repositories\Eloquent\CarBrandRepository;
 use App\Repositories\Eloquent\CarModelRepository;
 use App\Repositories\Eloquent\ServiceCategoryRepository;
 use App\Repositories\Eloquent\ServiceRepository;
 use App\Repositories\Eloquent\UserRepository;
+use App\Repositories\Eloquent\VehicleRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CarModelRepositoryInterface::class, CarModelRepository::class);
         $this->app->bind(ServiceCategoryRepositoryInterface::class, ServiceCategoryRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
+        $this->app->bind(VehicleRepositoryInterface::class, VehicleRepository::class);
     }
 
     /**

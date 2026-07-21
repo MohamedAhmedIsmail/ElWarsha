@@ -29,4 +29,12 @@ class CarModelRepository implements CarModelRepositoryInterface
             ? $query->paginate($queryData->perPage)
             : $query->get();
     }
+
+    public function existsForBrand(int $modelId, int $brandId): bool
+    {
+        return CarModel::query()
+            ->whereKey($modelId)
+            ->where('car_brand_id', $brandId)
+            ->exists();
+    }
 }

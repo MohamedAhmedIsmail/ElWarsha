@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LookupController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('auth/logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'me']);
     Route::put('me', [AuthController::class, 'updateMe']);
+    Route::apiResource('vehicles', VehicleController::class)->whereNumber('vehicle');
 });
 
 Route::get('car-brands', [LookupController::class, 'carBrands']);
