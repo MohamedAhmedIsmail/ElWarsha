@@ -7,6 +7,7 @@ use App\Repositories\Contracts\BookingRepositoryInterface;
 use App\Repositories\Contracts\BookingStatusLogRepositoryInterface;
 use App\Repositories\Contracts\CarBrandRepositoryInterface;
 use App\Repositories\Contracts\CarModelRepositoryInterface;
+use App\Repositories\Contracts\EmergencyGuidanceRepositoryInterface;
 use App\Repositories\Contracts\ServiceCategoryRepositoryInterface;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
 use App\Repositories\Contracts\SosProviderRepositoryInterface;
@@ -37,6 +38,7 @@ use App\Repositories\Eloquent\DiagnosisCategoryRepository;
 use App\Repositories\Eloquent\DiagnosisMediaRepository;
 use App\Repositories\Eloquent\DiagnosisRepository;
 use App\Repositories\Eloquent\DiagnosisWorkshopSuggestionRepository;
+use App\Repositories\Eloquent\EmergencyGuidanceRepository;
 use App\Repositories\Eloquent\LeadRepository;
 use App\Repositories\Eloquent\NotificationRepository;
 use App\Repositories\Eloquent\ReviewRepository;
@@ -89,6 +91,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SosProviderRepositoryInterface::class, SosProviderRepository::class);
         $this->app->bind(SosRequestRepositoryInterface::class, SosRequestRepository::class);
         $this->app->bind(SosRequestLogRepositoryInterface::class, SosRequestLogRepository::class);
+        $this->app->bind(EmergencyGuidanceRepositoryInterface::class, EmergencyGuidanceRepository::class);
     }
 
     /**

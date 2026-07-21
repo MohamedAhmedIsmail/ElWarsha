@@ -89,4 +89,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SosProvider::class);
     }
+
+    public function emergencyGuidanceRequests(): HasMany
+    {
+        return $this->hasMany(EmergencyGuidanceRequest::class);
+    }
 }

@@ -15,4 +15,12 @@ class SosServiceTypeRepository implements SosServiceTypeRepositoryInterface
             ->orderBy('name')
             ->get();
     }
+
+    public function findActiveBySlug(string $slug): ?SosServiceType
+    {
+        return SosServiceType::query()
+            ->active()
+            ->where('slug', $slug)
+            ->first();
+    }
 }

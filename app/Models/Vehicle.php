@@ -72,4 +72,9 @@ class Vehicle extends Model
     {
         return $this->hasMany(SosRequest::class);
     }
+
+    public function emergencyGuidanceRequests(): HasMany
+    {
+        return $this->hasMany(EmergencyGuidanceRequest::class);
+    }
 }

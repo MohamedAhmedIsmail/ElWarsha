@@ -11,4 +11,6 @@ interface SosServiceTypeRepositoryInterface
      * @return Collection<int, SosServiceType>
      */
     public function listActive(): Collection;
+
+    public function findActiveBySlug(string $slug): ?SosServiceType;
 }

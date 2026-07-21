@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\EmergencyGuidanceController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\ProviderSosRequestController;
 use App\Http\Controllers\SosRequestController;
@@ -46,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('sos-requests', [SosRequestController::class, 'store']);
     Route::get('sos-requests/{sosRequest}', [SosRequestController::class, 'show'])->whereNumber('sosRequest');
     Route::put('sos-requests/{sosRequest}/cancel', [SosRequestController::class, 'cancel'])->whereNumber('sosRequest');
+    Route::post('emergency-guidance', [EmergencyGuidanceController::class, 'store']);
 
     Route::prefix('workshop')->group(function (): void {
         Route::post('register', [WorkshopOwnerController::class, 'register']);
