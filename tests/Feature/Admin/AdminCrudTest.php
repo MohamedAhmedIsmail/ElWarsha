@@ -5,6 +5,11 @@ namespace Tests\Feature\Admin;
 use App\Enums\RecordStatus;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
+use App\Enums\BookingStatus;
+use App\Enums\DiagnosisConfidence;
+use App\Enums\DiagnosisStatus;
+use App\Enums\DiagnosisUrgency;
+use App\Enums\WorkshopStatus;
 use App\Models\Booking;
 use App\Models\CarBrand;
 use App\Models\CarModel;
@@ -15,6 +20,8 @@ use App\Models\ServiceCategory;
 use App\Models\SosRequest;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\Workshop;
+use App\Models\WorkshopVerification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -185,5 +192,154 @@ class AdminCrudTest extends TestCase
         $this->actingAs($this->admin)->get('/admin/services?search=Oil')
             ->assertOk()
             ->assertSee('Oil Change Plus');
+    }
+
+    public function test_admin_can_manage_workshops(): void
+    {
+        $owner = User::factory()->create(['role' => UserRole::WorkshopOwner]);
+        $service = Service::factory()->create(['name' => 'Battery Check']);
+        $brand = CarBrand::factory()->create(['name' => 'Nissan']);
+
+        $this->actingAs($this->admin)->post('/admin/workshops', [
+            'owner_id' => $owner->id,
+            'name' => 'Downtown Workshop',
+            'description' => 'General repairs',
+            'phone' => '01099999999',
+            'whatsapp' => '01099999999',
+            'email' => 'workshop@example.com',
+            'address' => '10 Street',
+            'city' => 'Cairo',
+            'area' => 'Dokki',
+            'latitude' => 30.0444,
+            'longitude' => 31.2357,
+            'accepts_booking' => 1,
+            'accepts_sos' => 1,
+            'status' => WorkshopStatus::Pending->value,
+            'subscription_status' => 'free',
+            'service_ids' => [$service->id],
+            'brand_ids' => [$brand->id],
+            'hours' => [
+                'monday' => ['opens_at' => '09:00', 'closes_at' => '18:00'],
+            ],
+        ])->assertRedirect();
+
+        $workshop = Workshop::query()->where('name', 'Downtown Workshop')->firstOrFail();
+
+        $this->assertTrue($workshop->services()->whereKey($service->id)->exists());
+        $this->assertTrue($workshop->brands()->whereKey($brand->id)->exists());
+        $this->assertDatabaseHas('workshop_working_hours', ['workshop_id' => $workshop->id, 'day_of_week' => 'monday']);
+
+        $this->actingAs($this->admin)->get('/admin/workshops?status=pending&city=Cairo&area=Dokki&accepts_booking=1')
+            ->assertOk()
+            ->assertSee('Downtown Workshop');
+
+        $this->actingAs($this->admin)->post("/admin/workshops/{$workshop->id}/approve")->assertRedirect();
+        $this->assertSame(WorkshopStatus::Approved, $workshop->refresh()->status);
+
+        $this->actingAs($this->admin)->post("/admin/workshops/{$workshop->id}/verify")->assertRedirect();
+        $this->assertTrue($workshop->refresh()->is_verified);
+
+        $this->actingAs($this->admin)->post("/admin/workshops/{$workshop->id}/unverify")->assertRedirect();
+        $this->assertFalse($workshop->refresh()->is_verified);
+    }
+
+    public function test_admin_can_approve_and_reject_workshop_verifications(): void
+    {
+        $workshop = Workshop::factory()->create(['is_verified' => false]);
+        $verification = WorkshopVerification::query()->create([
+            'workshop_id' => $workshop->id,
+            'commercial_register' => 'docs/cr.pdf',
+            'tax_card' => 'docs/tax.pdf',
+            'owner_id_image' => 'docs/id.jpg',
+            'workshop_license' => 'docs/license.pdf',
+            'status' => 'pending',
+        ]);
+
+        $this->actingAs($this->admin)->get("/admin/workshop-verifications/{$verification->id}")
+            ->assertOk()
+            ->assertSee('Commercial Register')
+            ->assertSee('Workshop License');
+
+        $this->actingAs($this->admin)->post("/admin/workshop-verifications/{$verification->id}/approve", [
+            'admin_notes' => 'Documents are valid.',
+        ])->assertRedirect();
+
+        $this->assertSame('approved', $verification->refresh()->status);
+        $this->assertSame($this->admin->id, $verification->verified_by);
+        $this->assertNotNull($verification->verified_at);
+        $this->assertTrue($workshop->refresh()->is_verified);
+
+        $second = WorkshopVerification::query()->create([
+            'workshop_id' => $workshop->id,
+            'status' => 'pending',
+        ]);
+
+        $this->actingAs($this->admin)->post("/admin/workshop-verifications/{$second->id}/reject", [
+            'admin_notes' => 'Missing tax card.',
+        ])->assertRedirect();
+
+        $this->assertSame('rejected', $second->refresh()->status);
+        $this->assertSame('Missing tax card.', $second->admin_notes);
+    }
+
+    public function test_admin_can_filter_and_update_diagnosis_status(): void
+    {
+        $category = ServiceCategory::factory()->create(['name' => 'Electricity']);
+        $diagnosis = Diagnosis::factory()->completed($category)->create([
+            'status' => DiagnosisStatus::Completed,
+            'confidence' => DiagnosisConfidence::Medium,
+            'urgency' => DiagnosisUrgency::High,
+            'description' => 'Battery clicking',
+            'symptoms_json' => ['clicking'],
+            'ai_response' => ['diagnosis' => 'Battery issue'],
+        ]);
+
+        $this->actingAs($this->admin)->get("/admin/diagnoses?status=completed&urgency=high&confidence=medium&affected_category={$category->id}")
+            ->assertOk()
+            ->assertSee('#' . $diagnosis->id)
+            ->assertSee('Electricity');
+
+        $this->actingAs($this->admin)->get("/admin/diagnoses/{$diagnosis->id}")
+            ->assertOk()
+            ->assertSee('AI Response')
+            ->assertSee('Suggested Workshops');
+
+        $this->actingAs($this->admin)->post("/admin/diagnoses/{$diagnosis->id}/manual-review")->assertRedirect();
+        $this->assertSame(DiagnosisStatus::ManualReview, $diagnosis->refresh()->status);
+
+        $this->actingAs($this->admin)->post("/admin/diagnoses/{$diagnosis->id}/complete")->assertRedirect();
+        $this->assertSame(DiagnosisStatus::Completed, $diagnosis->refresh()->status);
+    }
+
+    public function test_admin_can_filter_cancel_and_force_complete_bookings(): void
+    {
+        $booking = Booking::factory()->create(['status' => BookingStatus::Pending]);
+
+        $this->actingAs($this->admin)->get("/admin/bookings?status=pending&workshop={$booking->workshop_id}&service={$booking->service_id}&date_from=" . now()->toDateString())
+            ->assertOk()
+            ->assertSee('#' . $booking->id);
+
+        $this->actingAs($this->admin)->get("/admin/bookings/{$booking->id}")
+            ->assertOk()
+            ->assertSee('Status Logs');
+
+        $this->actingAs($this->admin)->post("/admin/bookings/{$booking->id}/cancel", [
+            'admin_notes' => 'Customer requested cancellation.',
+        ])->assertRedirect();
+
+        $this->assertSame(BookingStatus::Cancelled, $booking->refresh()->status);
+        $this->assertDatabaseHas('booking_status_logs', [
+            'booking_id' => $booking->id,
+            'old_status' => BookingStatus::Pending->value,
+            'new_status' => BookingStatus::Cancelled->value,
+            'changed_by' => $this->admin->id,
+        ]);
+
+        $this->actingAs($this->admin)->post("/admin/bookings/{$booking->id}/complete", [
+            'admin_notes' => 'Force completed by admin.',
+        ])->assertRedirect();
+
+        $this->assertSame(BookingStatus::Completed, $booking->refresh()->status);
+        $this->assertNotNull($booking->completed_at);
     }
 }

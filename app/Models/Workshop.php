@@ -77,6 +77,11 @@ class Workshop extends Model
         return $this->hasMany(WorkshopWorkingHour::class);
     }
 
+    public function verifications(): HasMany
+    {
+        return $this->hasMany(WorkshopVerification::class);
+    }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
